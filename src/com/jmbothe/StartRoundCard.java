@@ -3,11 +3,11 @@ package com.jmbothe;
 import processing.core.PApplet;
 
 public class StartRoundCard {
-    protected PApplet p;
-
     protected String currentPlayer;
     protected String prompt;
     protected int count;
+
+    protected PApplet p;
 
     StartRoundCard(PApplet p) {
         currentPlayer = Game.get(p).currentPlayer.name().equals("PLAYER_1") ? "Player 1" : "Player 2";

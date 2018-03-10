@@ -21,7 +21,6 @@ public class Main extends PApplet {
         size(displayWidth, displayHeight);
         menu = new Menu(this);
         slingshot = new Slingshot(this);
-        timer = new Timer(this);
     }
 
     public void setup() {
@@ -32,6 +31,9 @@ public class Main extends PApplet {
         background(102);
 
         if (currentView == VIEW.PLAY) {
+            if (timer == null) {
+                timer = new Timer(30, 36, "Time Left ", 0.4f, 0.1f,this);
+            }
             // Add new Target every 60 frames (i.e., every second)
             if (frameCount % 60 == 0) {
                 Game.get(this).addTarget();
