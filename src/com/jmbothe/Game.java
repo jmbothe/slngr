@@ -46,7 +46,7 @@ public class Game {
     }
 
     public void switchPlayers() {
-        if (currentPlayer.equals(PLAYER.PLAYER_1)) {
+        if (currentPlayer == PLAYER.PLAYER_1) {
             currentPlayer = PLAYER.PLAYER_2;
         } else {
             currentPlayer = null;

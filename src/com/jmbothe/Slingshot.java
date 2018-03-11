@@ -38,7 +38,7 @@ public class Slingshot {
     }
 
     public void draw() {
-        if (p.mousePressed == true) updateControlPoints(p.mouseX, p.mouseY);
+        if (p.mousePressed) updateControlPoints(p.mouseX, p.mouseY);
 
         p.noFill();
         p.strokeWeight(4);

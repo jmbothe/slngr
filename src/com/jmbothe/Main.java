@@ -4,12 +4,10 @@ import processing.core.PApplet;
 
 public class Main extends PApplet {
     private Menu menu;
-    private Slingshot slingshot;
-    private Projectile projectile = null;
-    private Timer timer;
-    private StartRoundCard startRoundCard;
+    private TransitionView transitionView;
+    private Round round;
 
-    protected enum VIEW { MENU, PLAY, STARTROUND, ENDROUND, ENDMATCH };
+    protected enum VIEW { MENU, PLAY, PREROUND, POSTROUND, POSTMATCH };
     protected static VIEW currentView;
 
     public static void main(String[] args) {
@@ -20,7 +18,7 @@ public class Main extends PApplet {
     public void settings() {
         size(displayWidth, displayHeight);
         menu = new Menu(this);
-        slingshot = new Slingshot(this);
+        transitionView = new TransitionView(this);
     }
 
     public void setup() {
@@ -31,60 +29,41 @@ public class Main extends PApplet {
         background(102);
 
         if (currentView == VIEW.PLAY) {
-            if (timer == null) {
-                timer = new Timer(30, 36, "Time Left ", 0.4f, 0.1f,this);
+            if (round == null) {
+                round = new Round(this);
             }
-            // Add new Target every 60 frames (i.e., every second)
-            if (frameCount % 60 == 0) {
-                Game.get(this).addTarget();
-                timer.countDown();
+            round.draw();
+            if (round.timer.count < 0) {
+                currentView = VIEW.POSTROUND;
+                round = null;
             }
-
-            if (timer.count < 0) {
-                currentView = Game.get(this).gameOver ? VIEW.ENDMATCH : VIEW.ENDROUND;
-            }
-
-            //Draw slingshot and projectile
-            if (!mousePressed) slingshot.rebound();
-            slingshot.draw();
-            if (projectile != null) projectile.draw();
-
-            // Update position, draw, and remove Targets as necessary
-            Game.get(this).manageTargets(projectile);
-
-            timer.draw();
-
         } else if (currentView == VIEW.MENU) {
             if (mousePressed && mouseX > width * 0.3 && mouseX < width * 0.6 && mouseY > height * 0.7) {
-                startRoundCard = new StartRoundCard(this);
-                currentView = VIEW.STARTROUND;
+                currentView = VIEW.PREROUND;
             } else {
                 menu.draw();
             }
-        } else if (currentView == VIEW.STARTROUND) {
-            startRoundCard.draw();
-            if (startRoundCard.count < 0) {
+        } else if (currentView == VIEW.PREROUND) {
+            transitionView.drawPreRound();
+            if (transitionView.timer.count < 0) {
+                transitionView.timer.reset();
                 currentView = VIEW.PLAY;
             }
-        } else if (currentView == VIEW.ENDROUND) {
-
-        } else if (currentView == VIEW.ENDMATCH) {
+        } else if (currentView == VIEW.POSTROUND) {
+            transitionView.drawPostRound();
+            if (transitionView.timer.count < 0) {
+                transitionView.timer.reset();
+                currentView = Game.get(this).gameOver ? VIEW.POSTMATCH : VIEW.PREROUND;
+                Game.get(this).switchPlayers();
+            }
+        } else if (currentView == VIEW.POSTMATCH) {
 
         }
-
     }
 
     public void mouseReleased() {
-        float xVel = (slingshot.x - slingshot.controlX) / 10;
-        float yVel = (slingshot.restY - slingshot.controlY) / 10;
-
-        projectile = new Projectile(
-                slingshot.controlX + (slingshot.x - slingshot.controlX),
-                slingshot.controlY + (slingshot.restY - slingshot.controlY),
-                xVel,
-                yVel,
-                this
-        );
+        if (currentView == VIEW.PLAY) {
+            round.clicked = true;
+        }
     }
-
 }
