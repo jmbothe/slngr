@@ -8,7 +8,7 @@ public class TransitionView {
     protected PApplet p;
 
     TransitionView(PApplet p) {
-        timer = new Timer(3, 100, "Countdown: ", 0.5f, p);
+        timer = new Timer(5, 100, "Countdown: ", 0.5f, p);
         this.p = p;
     }
 
@@ -23,13 +23,11 @@ public class TransitionView {
 
     private String makePostMatchText() {
         if (Game.get(p).getTie()) {
-            String players = "Players ";
+            String players = "";
             for (Player player : Game.get(p).tiedPlayers) {
-                players += (Game.get(p).tiedPlayers.indexOf(player) == Game.get(p).tiedPlayers.size() - 1)
-                ? "and " + (Game.get(p).players.indexOf(player) + 1)
-                : (Game.get(p).players.indexOf(player) + 1) + ", ";
+                players += "Player " + (Game.get(p).players.indexOf(player) + 1) + "\n";
             }
-            return "Its a tie between " + players + "\nwith a score of " + Game.get(p).getWinnerScore();
+            return "Its a tie between\n" + players + "\nwith a score of " + Game.get(p).getWinnerScore();
         }
         return "Player " + (Game.get(p).players.indexOf(Game.get(p).getWinner()) + 1) +
                 " wins\nwith a score of " + Game.get(p).getWinnerScore() + " points!";

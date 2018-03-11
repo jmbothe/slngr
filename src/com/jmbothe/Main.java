@@ -97,7 +97,7 @@ public class Main extends PApplet {
 
     public void mouseReleased() {
         if (currentView == VIEW.PLAY) {
-            round.setClicked();
+            round.mouseReleased();
         }
     }
 }

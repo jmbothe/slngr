@@ -2,7 +2,6 @@ package com.jmbothe;
 
 import processing.core.PApplet;
 
-import java.lang.management.PlatformLoggingMXBean;
 import java.util.Set;
 import java.util.List;
 import java.util.HashSet;
@@ -13,6 +12,7 @@ public class Game {
     private static Game game;
 
     protected final Set<Target> targets;
+    protected Set<Target> toRemove;
     protected final List<Player> players;
     protected final List<Player> playersByRank;
     protected final List<Player> tiedPlayers;
@@ -27,6 +27,7 @@ public class Game {
 
     private Game(PApplet p) {
         targets = new HashSet<>();
+        toRemove = new HashSet<>();
         players = new ArrayList<>();
         playersByRank = new ArrayList<>();
         tiedPlayers = new ArrayList<>();
@@ -126,14 +127,15 @@ public class Game {
     }
 
     public void manageTargets(Projectile projectile) {
-        Set<Target> toRemove = new HashSet<>();
+        toRemove.clear();
         for (Target target : targets) {
             target.updatePosition();
-            if (target.isGone()) {
-                toRemove.add(target);
-            } if (target.isShot(projectile)) {
+            if (target.isShot(projectile)) {
                 toRemove.add(target);
                 Game.get(p).currentPlayer.addPoints((int) target.getPoints());
+            }
+            if (target.isGone()) {
+                toRemove.add(target);
             }
             target.draw();
         }

@@ -7,11 +7,11 @@ public class Round {
     private final ScoreView scoreView;
     private final Slingshot slingshot;
     private Projectile projectile;
-    private boolean clicked;
+    private boolean mouseReleased;
     private PApplet p;
 
     Round(PApplet p) {
-        timer = new Timer(5, 36, "Time Left ", 0.1f, p);
+        timer = new Timer(30, 36, "Time Left ", 0.1f, p);
         slingshot = new Slingshot(p);
         scoreView = new ScoreView(p);
         this.p = p;
@@ -21,8 +21,8 @@ public class Round {
         return timer;
     }
 
-    public void setClicked() {
-        clicked = true;
+    public void mouseReleased() {
+        mouseReleased = true;
     }
 
     public void draw() {
@@ -43,8 +43,8 @@ public class Round {
         timer.draw();
         scoreView.draw();
 
-        if (clicked) {
-            clicked = false;
+        if (mouseReleased) {
+            mouseReleased = false;
             float xVel = (slingshot.x - slingshot.getControlX()) / 3;
             float yVel = (slingshot.restY - slingshot.getControlY()) / 3;
 
