@@ -2,33 +2,24 @@ package com.jmbothe;
 
 import processing.core.PApplet;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Game {
     private static Game game;
 
     protected Set<Target> targets;
-    protected Map<PLAYER, Player> players;
+    protected List<Player> players;
 
-    protected enum PLAYER {PLAYER_1, PLAYER_2};
-    protected PLAYER currentPlayer;
+    protected Player currentPlayer;
     protected Player winner;
     protected boolean gameOver;
 
-    PApplet p;
+    protected PApplet p;
 
     private Game(PApplet p) {
         this.p = p;
         targets = new HashSet<>();
-        players = new HashMap<>();
-
-        players.put(PLAYER.PLAYER_1, new Player(p));
-        players.put(PLAYER.PLAYER_2, new Player(p));
-
-        currentPlayer = PLAYER.PLAYER_1;
+        players = new ArrayList<>();
         gameOver = false;
     }
 
@@ -37,27 +28,43 @@ public class Game {
         return game;
     }
 
+    public static Game get() {
+        return game;
+    }
+
+    public void initGame(int numPlayers) {
+        while (numPlayers > 0) {
+            numPlayers--;
+            players.add(new Player(p));
+        }
+        currentPlayer = players.get(0);
+    }
+
     public Set<Target> getTargets() {
      return targets;
     }
 
-    public Map<PLAYER, Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
     public void switchPlayers() {
-        if (currentPlayer == PLAYER.PLAYER_1) {
-            currentPlayer = PLAYER.PLAYER_2;
-        } else {
+        try {
+            currentPlayer = players.get(players.indexOf(currentPlayer) + 1);
+        } catch (ArrayIndexOutOfBoundsException e) {
             currentPlayer = null;
         }
     }
+
     public boolean handleGameOver() {
         if (currentPlayer == null) {
             gameOver = true;
-            winner = players.get(PLAYER.PLAYER_1).score > players.get(PLAYER.PLAYER_2).score
-                    ? players.get(PLAYER.PLAYER_1)
-                    : players.get(PLAYER.PLAYER_2);
+            winner = players.get(0);
+            for (Player player : players) {
+                if (player.score > winner.score) {
+                    winner = player;
+                }
+            }
             return true;
         } else {
             return false;
@@ -79,6 +86,7 @@ public class Game {
             target.draw();
         }
         for (Target target : toRemove) {
+            Game.get().currentPlayer.addPoints((int) target.points);
             targets.remove(target);
         }
     }

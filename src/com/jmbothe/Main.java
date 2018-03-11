@@ -6,12 +6,22 @@ public class Main extends PApplet {
     private Menu menu;
     private TransitionView transitionView;
     private Round round;
+    private static int numPlayers;
 
     protected enum VIEW { MENU, PLAY, PREROUND, POSTROUND, POSTMATCH };
     protected static VIEW currentView;
 
     public static void main(String[] args) {
-        currentView = VIEW.MENU;
+        numPlayers = 2;
+        if (args.length == 1) {
+            try {
+                numPlayers = Integer.parseInt(args[0]);
+            }
+            catch (NumberFormatException nfe) {
+                System.out.println("The first argument must be an integer.");
+                System.exit(1);
+            }
+        }
         PApplet.main("com.jmbothe.Main");
     }
 
@@ -19,6 +29,8 @@ public class Main extends PApplet {
         size(displayWidth, displayHeight);
         menu = new Menu(this);
         transitionView = new TransitionView(this);
+        Game.get(this).initGame(numPlayers);
+        currentView = VIEW.MENU;
     }
 
     public void setup() {

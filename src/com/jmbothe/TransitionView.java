@@ -13,13 +13,12 @@ public class TransitionView {
     }
 
     public String makeTimerPrompt () {
-        String currentPlayer = Game.get(p).currentPlayer.name().equals("PLAYER_1") ? "Player 1" : "Player 2";
+        String currentPlayer = "Player " + (Game.get(p).players.indexOf(Game.get(p).currentPlayer) + 1);
         return currentPlayer + " Ready?";
     }
     public String makePostRoundText() {
-        String currentPlayer = Game.get(p).currentPlayer.name().equals("PLAYER_1") ? "Player 1" : "Player 2";
-        return "Nice Round " + currentPlayer + "! " + "Your score was " + Game.get(p).players.get(Game.get(p).currentPlayer).score + " points!";
-
+        String currentPlayer = "Player " + (Game.get(p).players.indexOf(Game.get(p).currentPlayer) + 1);
+        return "Nice Round " + currentPlayer + "! " + "Your score was " + Game.get(p).currentPlayer.score + " points!";
     }
 
     public void drawPreRound() {
