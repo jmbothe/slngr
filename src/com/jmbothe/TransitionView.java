@@ -21,6 +21,10 @@ public class TransitionView {
         return "Nice Round " + currentPlayer + "! " + "Your score was " + Game.get(p).currentPlayer.score + " points!";
     }
 
+    public String makePostMatchText() {
+        return "Player " + (Game.get(p).players.indexOf(Game.get(p).winner) + 1) + " wins with a score of " + Game.get().winnerScore + " points!";
+    }
+
     public void drawPreRound() {
         if (p.frameCount % 60 == 0) {
             timer.countDown();
@@ -55,6 +59,6 @@ public class TransitionView {
         p.textAlign(p.CENTER);
 
         p.textSize(100);
-        p.text(makePostRoundText(), 0, (float) (p.height * 0.3), p.width, (float) (p.height * 0.3));
+        p.text(makePostMatchText(), 0, (float) (p.height * 0.3), p.width, (float) (p.height * 0.3));
     }
 }

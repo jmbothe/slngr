@@ -14,6 +14,7 @@ public class Game {
     protected Player currentPlayer;
     protected Player winner;
     protected boolean gameOver;
+    protected int winnerScore;
 
     protected PApplet p;
 
@@ -50,32 +51,28 @@ public class Game {
     }
 
     public void switchPlayers() {
-        try {
+        if (players.indexOf(currentPlayer) == players.size() - 1) {
+            handleGameOver();
+        } else {
             currentPlayer = players.get(players.indexOf(currentPlayer) + 1);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            currentPlayer = null;
         }
     }
 
-    public boolean handleGameOver() {
-        if (currentPlayer == null) {
-            gameOver = true;
-            playersByRank = new ArrayList<>();
-            winner = players.get(0);
-            for (Player player : players) {
-                if (player.score > player.highScore) {
-                    player.highScore = player.score;
-                }
-                if (player.score > winner.score) {
-                    winner = player;
-                }
-                playersByRank.add(player);
+    public void handleGameOver() {
+        gameOver = true;
+        playersByRank = new ArrayList<>();
+        winner = players.get(0);
+        winnerScore = winner.score;
+        for (Player player : players) {
+            player.setHighScore();
+            if (player.score > winner.score) {
+                winner = player;
+                winnerScore = winner.score;
             }
-            Collections.sort(playersByRank);
-            return true;
-        } else {
-            return false;
+            playersByRank.add(player);
+            player.resetScore();
         }
+        Collections.sort(playersByRank);
     }
 
     public void addTarget() {

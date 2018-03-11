@@ -64,12 +64,17 @@ public class Main extends PApplet {
         } else if (currentView == VIEW.POSTROUND) {
             transitionView.drawPostRound();
             if (transitionView.timer.count < 0) {
+                Game.get(this).switchPlayers();
                 transitionView.timer.reset();
                 currentView = Game.get(this).gameOver ? VIEW.POSTMATCH : VIEW.PREROUND;
-                Game.get(this).switchPlayers();
+
             }
         } else if (currentView == VIEW.POSTMATCH) {
-
+            transitionView.drawPostMatch();
+            if (transitionView.timer.count < 0) {
+                transitionView.timer.reset();
+                currentView = VIEW.MENU;
+            }
         }
     }
 
