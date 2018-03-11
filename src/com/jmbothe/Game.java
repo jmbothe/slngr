@@ -15,11 +15,13 @@ public class Game {
     protected final Set<Target> targets;
     protected final List<Player> players;
     protected final List<Player> playersByRank;
+    protected final List<Player> tiedPlayers;
 
     private Player currentPlayer;
     private Player winner;
     private boolean gameOver;
     private int winnerScore;
+    private boolean tie;
 
     protected PApplet p;
 
@@ -27,6 +29,7 @@ public class Game {
         targets = new HashSet<>();
         players = new ArrayList<>();
         playersByRank = new ArrayList<>();
+        tiedPlayers = new ArrayList<>();
         gameOver = false;
 
         this.p = p;
@@ -59,6 +62,10 @@ public class Game {
         return winnerScore;
     }
 
+    public boolean getTie() {
+        return tie;
+    }
+
     public void switchPlayers() {
         if (players.indexOf(currentPlayer) == players.size() - 1) {
             handleGameOver();
@@ -68,17 +75,31 @@ public class Game {
     }
 
     public void handleGameOver() {
-        gameOver = true;
         playersByRank.clear();
+        tiedPlayers.clear();
+        gameOver = true;
+
         winner = players.get(0);
         winnerScore = winner.getScore();
+
         for (Player player : players) {
             player.setHighScore();
-            if (player.getScore() > winner.getScore()) {
+            if (player.getScore() > winnerScore) {
                 winner = player;
                 winnerScore = winner.getScore();
             }
             playersByRank.add(player);
+        }
+        for (Player player : players) {
+            if ((player != winner) && player.getScore() == winnerScore) {
+                tie = true;
+                tiedPlayers.add(player);
+            }
+        }
+        if (tie) {
+            tiedPlayers.add(winner);
+        } else {
+            winner.addWin();
         }
         Collections.sort(playersByRank);
     }
@@ -92,6 +113,7 @@ public class Game {
             player.resetScore();
         }
         gameOver = false;
+        tie = false;
         currentPlayer = players.get(0);
     }
 

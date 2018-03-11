@@ -14,7 +14,8 @@ public class Menu {
     private String makePlayerRanking() {
         String result = "";
         for (Player player : Game.get(p).playersByRank) {
-            result += "Player " + (Game.get(p).players.indexOf(player) + 1) + " high score: " + player.getHighScore() + "\n";
+            result += "Player " + (Game.get(p).players.indexOf(player) + 1) + "   high score: "
+                    + player.getHighScore() + ",    wins: " + player.getWins() + "\n";
         }
         return result;
     }
@@ -31,10 +32,10 @@ public class Menu {
         p.text(description, p.width * 0.01f, p.height * 0.4f, p.width * 0.5f, p.height * 0.5f);
 
         p.textSize(60);
-        p.text("Player Rankings:", p.width * 0.7f, p.height * 0.45f);
+        p.text("Player Rankings:", p.width * 0.75f, p.height * 0.45f);
 
         p.textSize(40);
-        p.text(makePlayerRanking(), p.width * 0.7f, p.height * 0.55f);
+        p.text(makePlayerRanking(), p.width * 0.75f, p.height * 0.55f);
 
         if (mouseOverPlay) p.fill(255, 100, 100);
         p.textSize(148);

@@ -22,8 +22,17 @@ public class TransitionView {
     }
 
     private String makePostMatchText() {
+        if (Game.get(p).getTie()) {
+            String players = "Players ";
+            for (Player player : Game.get(p).tiedPlayers) {
+                players += (Game.get(p).tiedPlayers.indexOf(player) == Game.get(p).tiedPlayers.size() - 1)
+                ? "and " + (Game.get(p).players.indexOf(player) + 1)
+                : (Game.get(p).players.indexOf(player) + 1) + ", ";
+            }
+            return "Its a tie between " + players + "\nwith a score of " + Game.get(p).getWinnerScore();
+        }
         return "Player " + (Game.get(p).players.indexOf(Game.get(p).getWinner()) + 1) +
-                " wins with a score of " + Game.get(p).getWinnerScore() + " points!";
+                " wins\nwith a score of " + Game.get(p).getWinnerScore() + " points!";
     }
 
     public void draw(Main.VIEW currentView) {

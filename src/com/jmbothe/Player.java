@@ -5,6 +5,7 @@ import processing.core.PApplet;
 public class Player implements Comparable {
     private int score;
     private int highScore;
+    private int wins;
 
     PApplet p;
 
@@ -23,6 +24,14 @@ public class Player implements Comparable {
 
     public void resetScore() {
         score = 0;
+    }
+
+    public void addWin() {
+        wins++;
+    }
+
+    public int getWins() {
+        return wins;
     }
 
     public int compareTo(Object compare) {
