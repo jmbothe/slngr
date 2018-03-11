@@ -22,15 +22,12 @@ public class Game {
         this.p = p;
         targets = new HashSet<>();
         players = new ArrayList<>();
+        playersByRank = players;
         gameOver = false;
     }
 
     public static Game get(PApplet p) {
         if (game == null) game = new Game(p);
-        return game;
-    }
-
-    public static Game get() {
         return game;
     }
 
@@ -40,14 +37,6 @@ public class Game {
             players.add(new Player(p));
         }
         currentPlayer = players.get(0);
-    }
-
-    public Set<Target> getTargets() {
-     return targets;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
     }
 
     public void switchPlayers() {
@@ -70,15 +59,21 @@ public class Game {
                 winnerScore = winner.score;
             }
             playersByRank.add(player);
-            player.resetScore();
         }
         Collections.sort(playersByRank);
+    }
+
+    public void resetGame() {
+        for (Player player : players) {
+            player.resetScore();
+        }
+        gameOver = false;
+        currentPlayer = players.get(0);
     }
 
     public void addTarget() {
         targets.add(new Target(p));
     }
-
 
     public void manageTargets(Projectile projectile) {
         Set<Target> toRemove = new HashSet<>();
@@ -88,7 +83,7 @@ public class Game {
                 toRemove.add(target);
             } if (target.isShot(projectile)) {
                 toRemove.add(target);
-                Game.get().currentPlayer.addPoints((int) target.points);
+                Game.get(p).currentPlayer.addPoints((int) target.points);
             }
             target.draw();
         }

@@ -50,7 +50,7 @@ public class Main extends PApplet {
                 round = null;
             }
         } else if (currentView == VIEW.MENU) {
-            if (mousePressed && mouseX > width * 0.3 && mouseX < width * 0.6 && mouseY > height * 0.7) {
+            if (mousePressed && mouseX < width * 0.3 && mouseY > height * 0.7) {
                 currentView = VIEW.PREROUND;
             } else {
                 menu.draw();
@@ -74,6 +74,7 @@ public class Main extends PApplet {
             if (transitionView.timer.count < 0) {
                 transitionView.timer.reset();
                 currentView = VIEW.MENU;
+                Game.get(this).resetGame();
             }
         }
     }

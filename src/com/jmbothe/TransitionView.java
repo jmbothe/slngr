@@ -18,11 +18,11 @@ public class TransitionView {
     }
     public String makePostRoundText() {
         String currentPlayer = "Player " + (Game.get(p).players.indexOf(Game.get(p).currentPlayer) + 1);
-        return "Nice Round " + currentPlayer + "! " + "Your score was " + Game.get(p).currentPlayer.score + " points!";
+        return "Nice Round " + currentPlayer + "!\n " + "Your score was " + Game.get(p).currentPlayer.score + " points!";
     }
 
     public String makePostMatchText() {
-        return "Player " + (Game.get(p).players.indexOf(Game.get(p).winner) + 1) + " wins with a score of " + Game.get().winnerScore + " points!";
+        return "Player " + (Game.get(p).players.indexOf(Game.get(p).winner) + 1) + " wins with a score of " + Game.get(p).winnerScore + " points!";
     }
 
     public void drawPreRound() {
