@@ -26,8 +26,8 @@ public class Round {
     }
 
     public void draw() {
-        // Add new Target every 60 frames (i.e., every second)
-        if (p.frameCount % 60 == 0) {
+        // Add new Target every 30 frames (i.e., every second)
+        if (p.frameCount % 30 == 0) {
             Game.get(p).addTarget();
             timer.countDown();
         }

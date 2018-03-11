@@ -42,7 +42,7 @@ public class TransitionView {
                 ? makePreRoundText()
                 : makePostMatchText();
 
-        if (p.frameCount % 60 == 0) timer.countDown();
+        if (p.frameCount % 30 == 0) timer.countDown();
 
         p.fill(0);
 

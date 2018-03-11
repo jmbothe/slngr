@@ -13,7 +13,7 @@ public class Target extends Circle {
     PApplet p;
 
     Target(PApplet p) {
-        super((float) (p.width * 0.5) + random.nextInt((int) (p.width * 0.5)), p.height, 0, -5 + random.nextInt(5), p);
+        super(p.width * 0.5f + random.nextInt((int) (p.width * 0.5)), p.height, 0, -5 + random.nextInt(5), p);
         points = 0 - yVel;
         diameter = 120 - (points * 12);
         this.p = p;

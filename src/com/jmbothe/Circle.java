@@ -19,7 +19,7 @@ public class Circle {
     }
 
     public void updatePosition() {
-        x += xVel;
-        y += yVel;
+        x += xVel * 2;
+        y += yVel * 2;
     }
 }

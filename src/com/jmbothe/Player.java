@@ -35,7 +35,7 @@ public class Player implements Comparable {
     }
 
     public int compareTo(Object compare) {
-        return ((Player) compare).highScore - this.highScore;
+        return ((((Player) compare).wins - this.wins) * 10) + (((Player) compare).highScore - this.highScore);
     }
 
     public int getScore() {

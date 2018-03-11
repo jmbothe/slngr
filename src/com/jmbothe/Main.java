@@ -36,7 +36,10 @@ public class Main extends PApplet {
         currentView = VIEW.MENU;
     }
 
-    public void setup() { background(102); }
+    public void setup() {
+        frameRate(30);
+        background(102);
+    }
 
     public void draw() {
         background(102);

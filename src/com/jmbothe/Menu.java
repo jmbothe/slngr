@@ -14,8 +14,8 @@ public class Menu {
     private String makePlayerRanking() {
         String result = "";
         for (Player player : Game.get(p).playersByRank) {
-            result += "Player " + (Game.get(p).players.indexOf(player) + 1) + "   high score: "
-                    + player.getHighScore() + ",    wins: " + player.getWins() + "\n";
+            result += "Player " + (Game.get(p).players.indexOf(player) + 1) + "    wins: " + player.getWins() + ",    high score: "
+                    + player.getHighScore() + "\n";
         }
         return result;
     }
