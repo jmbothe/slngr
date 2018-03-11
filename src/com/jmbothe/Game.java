@@ -80,13 +80,15 @@ public class Game {
         Set<Target> toRemove = new HashSet<>();
         for (Target target : targets) {
             target.updatePosition();
-            if (target.isGone() || target.isShot(projectile)) {
+            if (target.isGone()) {
                 toRemove.add(target);
+            } if (target.isShot(projectile)) {
+                toRemove.add(target);
+                Game.get().currentPlayer.addPoints((int) target.points);
             }
             target.draw();
         }
         for (Target target : toRemove) {
-            Game.get().currentPlayer.addPoints((int) target.points);
             targets.remove(target);
         }
     }

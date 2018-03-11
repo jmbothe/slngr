@@ -4,6 +4,7 @@ import processing.core.PApplet;
 
 public class Round {
     protected Timer timer;
+    protected ScoreView scoreView;
     protected Slingshot slingshot;
     protected Projectile projectile;
     protected boolean clicked;
@@ -12,6 +13,7 @@ public class Round {
     Round(PApplet p) {
         timer = new Timer(10, 36, "Time Left ", 0.4f, 0.1f, p);
         slingshot = new Slingshot(p);
+        scoreView = new ScoreView(p);
         this.p = p;
     }
 
@@ -31,6 +33,7 @@ public class Round {
         Game.get(p).manageTargets(projectile);
 
         timer.draw();
+        scoreView.draw();
 
         if (clicked) {
             clicked = false;
