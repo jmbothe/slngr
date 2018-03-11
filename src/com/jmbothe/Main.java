@@ -82,6 +82,7 @@ public class Main extends PApplet {
 
                 if (round.timer.count < 0) {
                     currentView = VIEW.POSTROUND;
+                    Game.get(this).clearTargets();
                     round = null;
                 } else {
                     round.draw();

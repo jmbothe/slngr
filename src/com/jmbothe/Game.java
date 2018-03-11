@@ -75,6 +75,10 @@ public class Game {
         targets.add(new Target(p));
     }
 
+    public void clearTargets() {
+        targets = new HashSet<>();
+    }
+
     public void manageTargets(Projectile projectile) {
         Set<Target> toRemove = new HashSet<>();
         for (Target target : targets) {
