@@ -3,7 +3,7 @@ package com.jmbothe;
 import processing.core.PApplet;
 
 public class Main extends PApplet {
-    private enum VIEW { MENU, PLAY, PREROUND, POSTROUND, POSTMATCH };
+    protected enum VIEW { MENU, PLAY, PREROUND, POSTROUND, POSTMATCH };
     private static VIEW currentView;
 
     private Menu menu;
@@ -56,7 +56,7 @@ public class Main extends PApplet {
                     transitionView.timer.reset();
                     currentView = VIEW.PLAY;
                 } else {
-                    transitionView.drawPreRound();
+                    transitionView.draw(currentView);
                 }
                 break;
             case POSTROUND:
@@ -65,7 +65,7 @@ public class Main extends PApplet {
                     transitionView.timer.reset();
                     currentView = Game.get(this).getGameOver() ? VIEW.POSTMATCH : VIEW.PREROUND;
                 } else {
-                    transitionView.drawPostRound();
+                    transitionView.draw(currentView);
                 }
                 break;
             case POSTMATCH:
@@ -74,7 +74,7 @@ public class Main extends PApplet {
                     Game.get(this).resetGame();
                     currentView = VIEW.MENU;
                 } else {
-                    transitionView.drawPostMatch();
+                    transitionView.draw(currentView);
                 }
                 break;
             case PLAY:

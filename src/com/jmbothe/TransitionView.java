@@ -8,58 +8,39 @@ public class TransitionView {
     protected PApplet p;
 
     TransitionView(PApplet p) {
-        timer = new Timer(3, 100, "Countdown: ", 0.4f, 0.6f, p);
+        timer = new Timer(3, 100, "Countdown: ", 0.5f, p);
         this.p = p;
     }
 
-    public String makeTimerPrompt () {
+    private String makePreRoundText () {
         String currentPlayer = "Player " + (Game.get(p).players.indexOf(Game.get(p).getCurrentPlayer()) + 1);
         return currentPlayer + " Ready?";
     }
-    public String makePostRoundText() {
+    private String makePostRoundText() {
         String currentPlayer = "Player " + (Game.get(p).players.indexOf(Game.get(p).getCurrentPlayer()) + 1);
         return "Nice Round " + currentPlayer + "!\n " + "Your score was " + Game.get(p).getCurrentPlayer().getScore() + " points!";
     }
 
-    public String makePostMatchText() {
+    private String makePostMatchText() {
         return "Player " + (Game.get(p).players.indexOf(Game.get(p).getWinner()) + 1) +
                 " wins with a score of " + Game.get(p).getWinnerScore() + " points!";
     }
 
-    public void drawPreRound() {
-        if (p.frameCount % 60 == 0) {
-            timer.countDown();
-        }
+    public void draw(Main.VIEW currentView) {
+        String text = currentView == Main.VIEW.POSTROUND
+                ? makePostRoundText()
+                : currentView == Main.VIEW.PREROUND
+                ? makePreRoundText()
+                : makePostMatchText();
+
+        if (p.frameCount % 60 == 0) timer.countDown();
+
         p.fill(0);
 
         p.textAlign(p.CENTER);
 
         p.textSize(100);
-        p.text(makeTimerPrompt(), 0, (float) (p.height * 0.3), p.width, (float) (p.height * 0.3));
-        timer.draw();
-    }
-
-    public void drawPostRound() {
-        if (p.frameCount % 60 == 0) {
-            timer.countDown();
-        }
-        p.fill(0);
-
-        p.textAlign(p.CENTER);
-
-        p.textSize(100);
-        p.text(makePostRoundText(), 0, (float) (p.height * 0.3), p.width, (float) (p.height * 0.3));
-    }
-
-    public void drawPostMatch() {
-        if (p.frameCount % 60 == 0) {
-            timer.countDown();
-        }
-        p.fill(0);
-
-        p.textAlign(p.CENTER);
-
-        p.textSize(100);
-        p.text(makePostMatchText(), 0, (float) (p.height * 0.3), p.width, (float) (p.height * 0.3));
+        p.text(text, 0, (float) (p.height * 0.3), p.width, (float) (p.height * 0.3));
+        if (currentView == Main.VIEW.PREROUND) timer.draw();
     }
 }

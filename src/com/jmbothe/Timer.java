@@ -12,7 +12,7 @@ public class Timer {
 
     private PApplet p;
 
-    Timer(int count, float textSize, String prefix, float x, float y, PApplet p) {
+    Timer(int count, float textSize, String prefix, float y, PApplet p) {
         originalCount = count;
         this. count = count;
         this.textSize = textSize;
@@ -38,7 +38,7 @@ public class Timer {
         if (count >= 0) {
             p.fill(0);
             p.textSize(textSize);
-            p.text(prefix + count, p.width * x, p.height * y);
+            p.text(prefix + count, 0,p.height * y, p.width, p.height * y);
         }
     }
 
