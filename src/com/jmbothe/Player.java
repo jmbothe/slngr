@@ -2,7 +2,7 @@ package com.jmbothe;
 
 import processing.core.PApplet;
 
-public class Player {
+public class Player implements Comparable {
     protected int score;
     protected int highScore;
     protected int rank;
@@ -26,5 +26,9 @@ public class Player {
 
     public void setRank(int rank) {
         this.rank = rank;
+    }
+
+    public int compareTo(Object compare) {
+        return ((Player) compare).highScore - this.highScore;
     }
 }

@@ -47,6 +47,14 @@ public class TransitionView {
     }
 
     public void drawPostMatch() {
+        if (p.frameCount % 60 == 0) {
+            timer.countDown();
+        }
+        p.fill(0);
 
+        p.textAlign(p.CENTER);
+
+        p.textSize(100);
+        p.text(makePostRoundText(), 0, (float) (p.height * 0.3), p.width, (float) (p.height * 0.3));
     }
 }

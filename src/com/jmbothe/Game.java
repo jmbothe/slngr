@@ -9,6 +9,7 @@ public class Game {
 
     protected Set<Target> targets;
     protected List<Player> players;
+    protected List<Player> playersByRank;
 
     protected Player currentPlayer;
     protected Player winner;
@@ -59,12 +60,18 @@ public class Game {
     public boolean handleGameOver() {
         if (currentPlayer == null) {
             gameOver = true;
+            playersByRank = new ArrayList<>();
             winner = players.get(0);
             for (Player player : players) {
+                if (player.score > player.highScore) {
+                    player.highScore = player.score;
+                }
                 if (player.score > winner.score) {
                     winner = player;
                 }
+                playersByRank.add(player);
             }
+            Collections.sort(playersByRank);
             return true;
         } else {
             return false;
