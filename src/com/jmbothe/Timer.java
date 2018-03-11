@@ -3,12 +3,12 @@ package com.jmbothe;
 import processing.core.PApplet;
 
 public class Timer {
-    protected int originalCount;
-    protected int count;
-    protected float textSize;
-    protected String prefix;
-    protected float x;
-    protected float y;
+    private final int originalCount;
+    private int count;
+    private float textSize;
+    private String prefix;
+    private float x;
+    private float y;
 
     private PApplet p;
 
@@ -30,10 +30,16 @@ public class Timer {
         this.count = originalCount;
     }
 
+    public int getCount() {
+        return count;
+    }
+
     public void draw() {
-        p.fill(0);
-        p.textSize(textSize);
-        p.text(prefix + count, p.width * x, p.height * y);
+        if (count >= 0) {
+            p.fill(0);
+            p.textSize(textSize);
+            p.text(prefix + count, p.width * x, p.height * y);
+        }
     }
 
 }

@@ -3,8 +3,8 @@ package com.jmbothe;
 import processing.core.PApplet;
 
 public class Menu {
-    String description;
-    PApplet p;
+    private String description;
+    private PApplet p;
 
     Menu(PApplet p) {
         description = "each player has 30 seconds to use the slingshot to pop as many balloons as possible. The player with the highest score wins.";
@@ -14,7 +14,7 @@ public class Menu {
     public String makePlayerRanking() {
         String result = "";
         for (Player player : Game.get(p).playersByRank) {
-            result += "Player " + (Game.get(p).players.indexOf(player) + 1) + " high score: " + player.highScore + "\n";
+            result += "Player " + (Game.get(p).players.indexOf(player) + 1) + " high score: " + player.getHighScore() + "\n";
         }
         return result;
     }

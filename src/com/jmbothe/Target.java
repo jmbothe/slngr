@@ -5,9 +5,10 @@ import java.util.Random;
 
 public class Target extends Circle {
     private static Random random = new Random();
-    protected final float points;
-    protected final float diameter;
-    protected Collision collision;
+    private final Collision collision;
+
+    private final float points;
+    private final float diameter;
 
     PApplet p;
 
@@ -31,6 +32,10 @@ public class Target extends Circle {
                 projectile.x + projectile.xVel,
                 projectile.y + projectile.yVel
                 );
+    }
+
+    public float getPoints() {
+        return points;
     }
 
     public void draw() {

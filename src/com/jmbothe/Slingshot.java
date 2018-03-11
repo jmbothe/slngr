@@ -3,8 +3,8 @@ package com.jmbothe;
 import processing.core.PApplet;
 
 public class Slingshot {
-    protected float controlX;
-    protected float controlY;
+    private float controlX;
+    private float controlY;
     protected final float x;
     protected final float startY;
     protected final float endY;
@@ -35,6 +35,14 @@ public class Slingshot {
         if (controlY != restY) {
             controlY += (restY - controlY) / 1.5;
         }
+    }
+
+    public float getControlX() {
+        return controlX;
+    }
+
+    public float getControlY() {
+        return controlY;
     }
 
     public void draw() {

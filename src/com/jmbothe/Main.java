@@ -3,13 +3,13 @@ package com.jmbothe;
 import processing.core.PApplet;
 
 public class Main extends PApplet {
+    private enum VIEW { MENU, PLAY, PREROUND, POSTROUND, POSTMATCH };
+    private static VIEW currentView;
+
     private Menu menu;
     private TransitionView transitionView;
     private Round round;
     private static int numPlayers;
-
-    protected enum VIEW { MENU, PLAY, PREROUND, POSTROUND, POSTMATCH };
-    protected static VIEW currentView;
 
     public static void main(String[] args) {
         numPlayers = 2;
@@ -52,7 +52,7 @@ public class Main extends PApplet {
                 }
                 break;
             case PREROUND:
-                if (transitionView.timer.count < 0) {
+                if (transitionView.timer.getCount() < 0) {
                     transitionView.timer.reset();
                     currentView = VIEW.PLAY;
                 } else {
@@ -60,19 +60,19 @@ public class Main extends PApplet {
                 }
                 break;
             case POSTROUND:
-                if (transitionView.timer.count < 0) {
+                if (transitionView.timer.getCount() < 0) {
                     Game.get(this).switchPlayers();
                     transitionView.timer.reset();
-                    currentView = Game.get(this).gameOver ? VIEW.POSTMATCH : VIEW.PREROUND;
+                    currentView = Game.get(this).getGameOver() ? VIEW.POSTMATCH : VIEW.PREROUND;
                 } else {
                     transitionView.drawPostRound();
                 }
                 break;
             case POSTMATCH:
-                if (transitionView.timer.count < 0) {
+                if (transitionView.timer.getCount() < 0) {
                     transitionView.timer.reset();
-                    currentView = VIEW.MENU;
                     Game.get(this).resetGame();
+                    currentView = VIEW.MENU;
                 } else {
                     transitionView.drawPostMatch();
                 }
@@ -80,10 +80,10 @@ public class Main extends PApplet {
             case PLAY:
                 if (round == null) round = new Round(this);
 
-                if (round.timer.count < 0) {
-                    currentView = VIEW.POSTROUND;
-                    Game.get(this).clearTargets();
+                if (round.getTimer().getCount() < 0) {
                     round = null;
+                    Game.get(this).clearTargets();
+                    currentView = VIEW.POSTROUND;
                 } else {
                     round.draw();
                 }
@@ -94,7 +94,7 @@ public class Main extends PApplet {
 
     public void mouseReleased() {
         if (currentView == VIEW.PLAY) {
-            round.clicked = true;
+            round.setClicked();
         }
     }
 }

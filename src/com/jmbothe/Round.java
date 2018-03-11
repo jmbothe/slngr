@@ -3,18 +3,26 @@ package com.jmbothe;
 import processing.core.PApplet;
 
 public class Round {
-    protected Timer timer;
-    protected ScoreView scoreView;
-    protected Slingshot slingshot;
-    protected Projectile projectile;
-    protected boolean clicked;
-    protected PApplet p;
+    private Timer timer;
+    private final ScoreView scoreView;
+    private final Slingshot slingshot;
+    private Projectile projectile;
+    private boolean clicked;
+    private PApplet p;
 
     Round(PApplet p) {
         timer = new Timer(5, 36, "Time Left ", 0.4f, 0.1f, p);
         slingshot = new Slingshot(p);
         scoreView = new ScoreView(p);
         this.p = p;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void setClicked() {
+        clicked = true;
     }
 
     public void draw() {
@@ -37,12 +45,12 @@ public class Round {
 
         if (clicked) {
             clicked = false;
-            float xVel = (slingshot.x - slingshot.controlX) / 3;
-            float yVel = (slingshot.restY - slingshot.controlY) / 3;
+            float xVel = (slingshot.x - slingshot.getControlX()) / 3;
+            float yVel = (slingshot.restY - slingshot.getControlY()) / 3;
 
             projectile = new Projectile(
-                    slingshot.controlX + (slingshot.x - slingshot.controlX),
-                    slingshot.controlY + (slingshot.restY - slingshot.controlY),
+                    slingshot.getControlX() + (slingshot.x - slingshot.getControlX()),
+                    slingshot.getControlY() + (slingshot.restY - slingshot.getControlY()),
                     xVel,
                     yVel,
                     p

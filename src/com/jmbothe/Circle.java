@@ -5,8 +5,8 @@ import processing.core.PApplet;
 public class Circle {
     protected float x;
     protected float y;
-    protected float xVel;
-    protected float yVel;
+    protected final float xVel;
+    protected final float yVel;
 
     PApplet p;
 

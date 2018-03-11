@@ -9,7 +9,6 @@ public class Collision {
         this.p = p;
     }
 
-
     // Code lovingly lifted from Jeff Thompson's Collision Detection Library
     // https://github.com/jeffThompson/CollisionDetectionFunctionsForProcessing/
     public boolean linePoint(float x1, float y1, float x2, float y2, float px, float py) {

@@ -2,28 +2,34 @@ package com.jmbothe;
 
 import processing.core.PApplet;
 
-import java.util.*;
+import java.lang.management.PlatformLoggingMXBean;
+import java.util.Set;
+import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Game {
     private static Game game;
 
-    protected Set<Target> targets;
-    protected List<Player> players;
-    protected List<Player> playersByRank;
+    protected final Set<Target> targets;
+    protected final List<Player> players;
+    protected final List<Player> playersByRank;
 
-    protected Player currentPlayer;
-    protected Player winner;
-    protected boolean gameOver;
-    protected int winnerScore;
+    private Player currentPlayer;
+    private Player winner;
+    private boolean gameOver;
+    private int winnerScore;
 
     protected PApplet p;
 
     private Game(PApplet p) {
-        this.p = p;
         targets = new HashSet<>();
         players = new ArrayList<>();
-        playersByRank = players;
+        playersByRank = new ArrayList<>();
         gameOver = false;
+
+        this.p = p;
     }
 
     public static Game get(PApplet p) {
@@ -34,9 +40,23 @@ public class Game {
     public void initGame(int numPlayers) {
         while (numPlayers > 0) {
             numPlayers--;
-            players.add(new Player(p));
+            Player player = new Player(p);
+            players.add(player);
+            playersByRank.add(player);
         }
         currentPlayer = players.get(0);
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public int getWinnerScore() {
+        return winnerScore;
     }
 
     public void switchPlayers() {
@@ -49,18 +69,22 @@ public class Game {
 
     public void handleGameOver() {
         gameOver = true;
-        playersByRank = new ArrayList<>();
+        playersByRank.clear();
         winner = players.get(0);
-        winnerScore = winner.score;
+        winnerScore = winner.getScore();
         for (Player player : players) {
             player.setHighScore();
-            if (player.score > winner.score) {
+            if (player.getScore() > winner.getScore()) {
                 winner = player;
-                winnerScore = winner.score;
+                winnerScore = winner.getScore();
             }
             playersByRank.add(player);
         }
         Collections.sort(playersByRank);
+    }
+
+    public boolean getGameOver() {
+        return gameOver;
     }
 
     public void resetGame() {
@@ -76,7 +100,7 @@ public class Game {
     }
 
     public void clearTargets() {
-        targets = new HashSet<>();
+        targets.clear();
     }
 
     public void manageTargets(Projectile projectile) {
@@ -87,7 +111,7 @@ public class Game {
                 toRemove.add(target);
             } if (target.isShot(projectile)) {
                 toRemove.add(target);
-                Game.get(p).currentPlayer.addPoints((int) target.points);
+                Game.get(p).currentPlayer.addPoints((int) target.getPoints());
             }
             target.draw();
         }

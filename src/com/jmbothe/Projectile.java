@@ -3,7 +3,7 @@ package com.jmbothe;
 import processing.core.PApplet;
 
 public class Projectile extends Circle {
-    protected float diameter;
+    private float diameter;
 
     Projectile(float x, float y, float xVel, float yVel, PApplet p) {
         super(x, y, xVel, yVel, p);
