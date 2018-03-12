@@ -12,7 +12,7 @@ public class Round {
     private PApplet p;
 
     Round(PApplet p) {
-        timer = new Timer(5, 36, "Time Left ", 0.1f, p);
+        timer = new Timer(30, 36, "Time Left ", 0.1f, p);
         slingshot = new Slingshot(p);
         scoreView = new ScoreView(p);
         game = Game.get(p);
