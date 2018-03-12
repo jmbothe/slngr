@@ -3,42 +3,43 @@ package com.jmbothe;
 import processing.core.PApplet;
 
 public class TransitionView {
-    protected Timer timer;
-
-    protected PApplet p;
+    private Timer timer;
+    private Game game;
+    private PApplet p;
+    private String preRoundText;
+    private String postRoundText;
+    private String postMatchText;
 
     TransitionView(PApplet p) {
         timer = new Timer(5, 100, "Countdown: ", 0.5f, p);
+        game = Game.get(p);
         this.p = p;
-    }
 
-    private String makePreRoundText () {
-        String currentPlayer = "Player " + (Game.get(p).players.indexOf(Game.get(p).getCurrentPlayer()) + 1);
-        return currentPlayer + " Ready?";
-    }
-    private String makePostRoundText() {
-        String currentPlayer = "Player " + (Game.get(p).players.indexOf(Game.get(p).getCurrentPlayer()) + 1);
-        return "Nice Round " + currentPlayer + "!\n " + "Your score was " + Game.get(p).getCurrentPlayer().getScore() + " points!";
-    }
-
-    private String makePostMatchText() {
-        if (Game.get(p).getTie()) {
+        String currentPlayer = "Player " + (game.players.indexOf(game.getCurrentPlayer()) + 1);
+        preRoundText = currentPlayer + " Ready?";
+        postRoundText = "Nice Round " + currentPlayer + "!\n " + "Your score was " + game.getCurrentPlayer().getScore() + " points!";
+        if (game.getTie()) {
             String players = "";
-            for (Player player : Game.get(p).tiedPlayers) {
-                players += "Player " + (Game.get(p).players.indexOf(player) + 1) + "\n";
+            for (Player player : game.tiedPlayers) {
+                players += " - Player " + (game.players.indexOf(player) + 1);
             }
-            return "Its a tie between\n" + players + "\nwith a score of " + Game.get(p).getWinnerScore();
+            postMatchText = "Its a tie between\n" + players.substring(3) + "\nwith a score of " + game.getWinnerScore();
+        } else {
+            postMatchText = "Player " + (game.players.indexOf(game.getWinner()) + 1) +
+                    " wins\nwith a score of " + game.getWinnerScore() + " points!";
         }
-        return "Player " + (Game.get(p).players.indexOf(Game.get(p).getWinner()) + 1) +
-                " wins\nwith a score of " + Game.get(p).getWinnerScore() + " points!";
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 
     public void draw(Main.VIEW currentView) {
         String text = currentView == Main.VIEW.POSTROUND
-                ? makePostRoundText()
+                ? postRoundText
                 : currentView == Main.VIEW.PREROUND
-                ? makePreRoundText()
-                : makePostMatchText();
+                ? preRoundText
+                : postMatchText;
 
         if (p.frameCount % 30 == 0) timer.countDown();
 
@@ -47,7 +48,7 @@ public class TransitionView {
         p.textAlign(p.CENTER);
 
         p.textSize(100);
-        p.text(text, 0, (float) (p.height * 0.3), p.width, (float) (p.height * 0.3));
+        p.text(text, 0, (float) (p.height * 0.3), p.width, (float) (p.height));
         if (currentView == Main.VIEW.PREROUND) timer.draw();
     }
 }

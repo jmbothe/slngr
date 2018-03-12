@@ -10,28 +10,33 @@ public class Main extends PApplet {
     private TransitionView transitionView;
     private Round round;
     private static int numPlayers;
+    private Game game;
 
     public static void main(String[] args) {
-        numPlayers = 2;
         if (args.length == 1) {
             try {
-                numPlayers = Integer.parseInt(args[0]);
+                // Only allow between 2 and 5 players.
+                int playersArg = Integer.parseInt(args[0]);
+                numPlayers = playersArg > 1 && playersArg < 6 ? playersArg : 2;
+
             }
             catch (NumberFormatException nfe) {
-                System.out.println("The first argument must be an integer.");
+                System.out.println("The first argument must be an integer between 2 and 5.");
                 System.exit(1);
             }
         }
+        // initialize animation
         PApplet.main("com.jmbothe.Main");
     }
 
     public void settings() {
         size(displayWidth, displayHeight);
 
-        menu = new Menu(this);
-        transitionView = new TransitionView(this);
+//        menu = new Menu(this);
+//        transitionView = new TransitionView(this);
 
-        Game.get(this).initGame(numPlayers);
+        game = Game.get(this);
+        game.initGame(numPlayers);
 
         currentView = VIEW.MENU;
     }
@@ -46,35 +51,47 @@ public class Main extends PApplet {
 
         switch (currentView) {
             case MENU:
+                if (menu == null) menu = new Menu(this);
+
                 boolean mouseOverPlay = mouseX < width * 0.3 && mouseY > height * 0.7;
 
                 if (mousePressed && mouseOverPlay) {
+                    menu = null;
                     currentView = VIEW.PREROUND;
                 } else {
                     menu.draw(mouseOverPlay);
                 }
                 break;
             case PREROUND:
-                if (transitionView.timer.getCount() < 0) {
-                    transitionView.timer.reset();
+                if (transitionView == null) transitionView = new TransitionView(this);
+
+                if (transitionView.getTimer().getCount() < 0) {
+                    transitionView.getTimer().reset();
+                    transitionView = null;
                     currentView = VIEW.PLAY;
                 } else {
                     transitionView.draw(currentView);
                 }
                 break;
             case POSTROUND:
-                if (transitionView.timer.getCount() < 0) {
-                    Game.get(this).switchPlayers();
-                    transitionView.timer.reset();
-                    currentView = Game.get(this).getGameOver() ? VIEW.POSTMATCH : VIEW.PREROUND;
+                if (transitionView == null) transitionView = new TransitionView(this);
+
+                if (transitionView.getTimer().getCount() < 0) {
+                    game.switchPlayers();
+                    transitionView.getTimer().reset();
+                    transitionView = null;
+                    currentView = game.getGameOver() ? VIEW.POSTMATCH : VIEW.PREROUND;
                 } else {
                     transitionView.draw(currentView);
                 }
                 break;
             case POSTMATCH:
-                if (transitionView.timer.getCount() < 0) {
-                    transitionView.timer.reset();
-                    Game.get(this).resetGame();
+                if (transitionView == null) transitionView = new TransitionView(this);
+
+                if (transitionView.getTimer().getCount() < 0) {
+                    transitionView.getTimer().reset();
+                    transitionView = null;
+                    game.resetGame();
                     currentView = VIEW.MENU;
                 } else {
                     transitionView.draw(currentView);
@@ -85,7 +102,7 @@ public class Main extends PApplet {
 
                 if (round.getTimer().getCount() < 0) {
                     round = null;
-                    Game.get(this).clearTargets();
+                    game.clearTargets();
                     currentView = VIEW.POSTROUND;
                 } else {
                     round.draw();

@@ -8,12 +8,14 @@ public class Round {
     private final Slingshot slingshot;
     private Projectile projectile;
     private boolean mouseReleased;
+    private Game game;
     private PApplet p;
 
     Round(PApplet p) {
-        timer = new Timer(30, 36, "Time Left ", 0.1f, p);
+        timer = new Timer(5, 36, "Time Left ", 0.1f, p);
         slingshot = new Slingshot(p);
         scoreView = new ScoreView(p);
+        game = Game.get(p);
         this.p = p;
     }
 
@@ -28,7 +30,7 @@ public class Round {
     public void draw() {
         // Add new Target every 30 frames (i.e., every second)
         if (p.frameCount % 30 == 0) {
-            Game.get(p).addTarget();
+            game.addTarget();
             timer.countDown();
         }
 
@@ -38,7 +40,7 @@ public class Round {
         if (projectile != null) projectile.draw();
 
         // Update position, draw, and remove Targets as necessary
-        Game.get(p).manageTargets(projectile);
+        game.manageTargets(projectile);
 
         timer.draw();
         scoreView.draw();
