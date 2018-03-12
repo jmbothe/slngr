@@ -26,6 +26,12 @@ To install, edit, and/or play, [clone this repo](https://help.github.com/article
 
 ![Tie View](/img/tie_view.jpg)
 
+## Mock Ups
+
+![Mock 1](/img/mocks1.jpg)
+
+![Mock 2](/img/mocks2.jpg)
+
 ## Code Highlights
 
 ### Using Processing's Framerate as a Clock

@@ -13,6 +13,7 @@ public class Main extends PApplet {
     private Game game;
 
     public static void main(String[] args) {
+        numPlayers = 2;
         if (args.length == 1) {
             try {
                 // Only allow between 2 and 5 players.
@@ -32,8 +33,6 @@ public class Main extends PApplet {
     public void settings() {
         size(displayWidth, displayHeight);
 
-//        menu = new Menu(this);
-//        transitionView = new TransitionView(this);
 
         game = Game.get(this);
         game.initGame(numPlayers);
